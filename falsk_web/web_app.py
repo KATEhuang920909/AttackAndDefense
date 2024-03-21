@@ -10,7 +10,7 @@ from flask import Flask, render_template, request, redirect, url_for
 import json
 from CrawlerDetect.detectmodel import DetectModel
 
-from scapy.all import *
+# from scapy.all import *
 app = Flask(__name__)
 
 

@@ -134,7 +134,7 @@ if __name__ == '__main__':
    # nma.target_host = input("输入help可以查看帮助:")
    if nma.target_host == "help" or nma.target_host == "HELP":
        nma.useage()
-   nma.target_host = "120.26.224.206"#input("请输入需要扫描的主机ip地址:")
+   nma.target_host = "192.168.12.137"#input("请输入需要扫描的主机ip地址:")
 
    # nma.target_ports = "8888"#input("请输入需要扫描的主机 port:")
    #获取存活主机列表
