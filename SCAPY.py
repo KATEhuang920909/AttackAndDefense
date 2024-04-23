@@ -5,14 +5,29 @@
 @File:SCAPY.py
 @Software: PyCharm
 """
-
 from scapy.all import *
-# 添加过滤条件，只获取指定进程的数据包
-pid = 1234  # 指定进程的PID
-filter_str = 'host 120.26.224.206'
-# 定义处理回调函数，打印出抓取到的数据包的信息
-def handle_pkt(pkt):
-    pkt.show()
-# 启动抓包
-print("start")
-sniff(filter=filter_str,prn=lambda x:x.summary(),count=2)
+from scapy.layers.inet import TCP, IP, ICMP, Ether
+
+
+def handle_packet(packet):
+    # 检查是否为TCP SYN包
+    if packet.haslayer(TCP) and packet[TCP].flags == 0x02:  # 0x02代表TCP的SYN标志
+        # 创建一个TCP RST包来响应这个SYN包
+        tcp_packet = TCP(sport=packet[TCP].dport, dport=packet[TCP].sport, flags="R", seq=1, ack=1)
+
+        rst_packet = Ether() / IP(dst=packet[IP].src, src=packet[IP].dst) / tcp_packet
+        sendp(rst_packet)  # 发
+
+
+#
+def target_2(packet):
+    if packet.haslayer(TCP) and packet[TCP].flags == 0x02:  # 0x02代表TCP的SYN标志
+        ip_packet =  IP(dst=packet[IP].src, src=packet[IP].dst)
+        tcp_packet = TCP(sport=packet[TCP].dport, dport=packet[TCP].sport, flags="F", seq=1, ack=1)
+        packet = ip_packet / tcp_packet
+        send(packet)
+        print(f"Sent packet ")
+
+sniff(filter="tcp[tcpflags] == tcp-syn and ip dst 192.168.12.234 and ip src 192.168.12.29",
+      prn=target_2,
+      store=False)
