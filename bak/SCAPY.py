@@ -10,18 +10,18 @@ from scapy.layers.inet import TCP, IP, ICMP, Ether
 
 
 def handle_packet(packet):
-    # æ£€æŸ¥æ˜¯å¦ä¸ºTCP SYNåŒ…
-    if packet.haslayer(TCP) and packet[TCP].flags == 0x02:  # 0x02ä»£è¡¨TCPçš„SYNæ ‡å¿—
-        # åˆ›å»ºä¸€ä¸ªTCP RSTåŒ…æ¥å“åº”è¿™ä¸ªSYNåŒ…
+    # ¼ì²éÊÇ·ñÎªTCP SYN°ü
+    if packet.haslayer(TCP) and packet[TCP].flags == 0x02:  # 0x02´ú±íTCPµÄSYN±êÖ¾
+        # ´´½¨Ò»¸öTCP RST°üÀ´ÏìÓ¦Õâ¸öSYN°ü
         tcp_packet = TCP(sport=packet[TCP].dport, dport=packet[TCP].sport, flags="R", seq=1, ack=1)
 
         rst_packet = Ether() / IP(dst=packet[IP].src, src=packet[IP].dst) / tcp_packet
-        sendp(rst_packet)  # å‘
+        sendp(rst_packet)  # ·¢
 
 
 #
 def target_2(packet):
-    if packet.haslayer(TCP) and packet[TCP].flags == 0x02:  # 0x02ä»£è¡¨TCPçš„SYNæ ‡å¿—
+    if packet.haslayer(TCP) and packet[TCP].flags == 0x02:  # 0x02´ú±íTCPµÄSYN±êÖ¾
         ip_packet =  IP(dst=packet[IP].src, src=packet[IP].dst)
         tcp_packet = TCP(sport=packet[TCP].dport, dport=packet[TCP].sport, flags="F", seq=1, ack=1)
         packet = ip_packet / tcp_packet

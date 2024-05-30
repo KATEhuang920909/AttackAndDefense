@@ -8,7 +8,9 @@
 """
 from flask import Flask, render_template, request, redirect, url_for
 import json
-#from CrawlerDetect.detectmodel import DetectModel
+import sys
+sys.path.append("../CrawlerDetect")
+from detectmodel import DetectModel
 
 # from scapy.all import *
 app = Flask(__name__)
@@ -26,7 +28,7 @@ def data_load():
 
 
 def crawler_detect():
-    # crawler_detect = DetectModel()
+    crawler_detect = DetectModel()
     method = request.method
     url = request.url
     path = request.path
@@ -35,9 +37,9 @@ def crawler_detect():
     print("请求url：", url)
     print("请求路径：", path)
     print("请求头：", headers)
-    # result = crawler_detect.isCrawler(user_agent=headers["User-Agent"])
+    result = crawler_detect.isCrawler(user_agent=headers["User-Agent"])
     print("agent：", headers["User-Agent"])
-    # print(result)
+    print(result)
 
 
 

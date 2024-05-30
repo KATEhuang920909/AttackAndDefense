@@ -1,6 +1,6 @@
 import re
-from string import punctuation
-from CrawlerDetect.providers import Crawlers, Exclusions, Headers
+
+from providers import Crawlers, Exclusions, Headers
 
 
 class DetectModel(object):
